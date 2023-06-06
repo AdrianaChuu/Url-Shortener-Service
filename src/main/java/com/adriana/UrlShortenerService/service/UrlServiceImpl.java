@@ -23,49 +23,36 @@ public class UrlServiceImpl implements UrlService{
 
     @Override
     public Url createShortenLink(UrlDto urlDto) {
-        if(StringUtils.isNotEmpty(urlDto.getUrl())){
-            String encodedUrl = encodeUrl(urlDto.getUrl());
-            Url urlToSave = new Url();
-            urlToSave.setCreationDate(LocalDateTime.now());
-            urlToSave.setShortenUrl(encodedUrl);
-            urlToSave.setOriginalUrl(urlDto.getUrl());
-            urlToSave.setExpirationDate(getExpirationDate(urlDto.getExpirationDate(), urlToSave.getCreationDate()));
-            Url urlToPersist = persistShortenLink(urlToSave);
+        String encodedUrl = encodeUrl(urlDto.getUrl());
+        Url urlToSave = new Url();
+        urlToSave.setCreationDate(LocalDateTime.now());
+        urlToSave.setShortenUrl(encodedUrl);
+        urlToSave.setOriginalUrl(urlDto.getUrl());
+        urlToSave.setExpirationDate(getExpirationDate(urlDto.getExpirationDate(), urlToSave.getCreationDate()));
+        Url urlToPersist = saveCreatedUrl(urlToSave);
 
-            if(urlToPersist!=null){
-                return urlToPersist;
-            }
-        }
-        return null;
+        return urlToPersist!=null? urlToPersist:null;
     }
 
     private LocalDateTime getExpirationDate(String expirationDate, LocalDateTime creationDate) {
         if(StringUtils.isBlank(expirationDate)){
             return creationDate.plusDays(1);
         }
-        LocalDateTime expirationDateToSet = LocalDateTime.parse(expirationDate);
-        return expirationDateToSet;
+        return LocalDateTime.parse(expirationDate);
     }
 
     private String encodeUrl(String url) {
-        String encodedUrl = "";
         LocalDateTime time = LocalDateTime.now();
-        encodedUrl = Hashing.crc32()
-                .hashString(url.concat(time.toString()), StandardCharsets.UTF_8)
-                .toString();
-
-        return encodedUrl;
+        return Hashing.crc32().hashString(url.concat(time.toString()), StandardCharsets.UTF_8).toString();
     }
 
     @Override
-    public Url persistShortenLink(Url url) {
-        Url urlToSave = urlRepository.save(url);
-        return urlToSave;
+    public Url saveCreatedUrl(Url url) {
+        return urlRepository.save(url);
     }
 
     @Override
     public Url getUrl(String url) {
-        Url urlToGet = urlRepository.findByShortenUrl(url);
-        return urlToGet;
+        return urlRepository.findByShortenUrl(url);
     }
 }

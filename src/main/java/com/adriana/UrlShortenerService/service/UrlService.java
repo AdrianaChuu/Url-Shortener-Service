@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UrlService {
-    public Url createShortenLink(UrlDto urlDto);
-    public Url persistShortenLink(Url url);
-    public Url getUrl(String url);
+    Url createShortenLink(UrlDto urlDto);
+    Url saveCreatedUrl(Url url);
+    Url getUrl(String url);
 }
