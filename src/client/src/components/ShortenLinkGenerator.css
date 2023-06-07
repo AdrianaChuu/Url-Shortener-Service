@@ -1,0 +1,15 @@
+.center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    flex-direction: column;
+    background-image: url(../../public/mountain.jpg) ;
+}
+
+.input{
+    width: 1000px;
+}
+
+
