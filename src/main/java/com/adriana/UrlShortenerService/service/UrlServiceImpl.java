@@ -4,15 +4,14 @@ import com.adriana.UrlShortenerService.dto.UrlDto;
 import com.adriana.UrlShortenerService.entity.Url;
 import com.adriana.UrlShortenerService.repository.UrlRepository;
 import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-
 @Component
-public class UrlServiceImpl implements UrlService{
+public class UrlServiceImpl implements UrlService {
 
     private UrlRepository urlRepository;
 
@@ -35,7 +34,7 @@ public class UrlServiceImpl implements UrlService{
     }
 
     private LocalDateTime getExpirationDate(String expirationDate, LocalDateTime creationDate) {
-        if(StringUtils.isBlank(expirationDate)){
+        if (StringUtils.isBlank(expirationDate)) {
             return creationDate.plusHours(12);
         }
         return LocalDateTime.parse(expirationDate);

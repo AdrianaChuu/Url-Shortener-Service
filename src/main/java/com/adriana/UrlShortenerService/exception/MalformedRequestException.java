@@ -1,16 +1,16 @@
 package com.adriana.UrlShortenerService.exception;
 
+import java.io.Serial;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.io.Serial;
-
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class MalformedRequestException extends RuntimeException {
+
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public MalformedRequestException(String message){
+    public MalformedRequestException(String message) {
         super(message);
     }
 }

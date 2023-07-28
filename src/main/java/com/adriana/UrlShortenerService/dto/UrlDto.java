@@ -1,9 +1,18 @@
 package com.adriana.UrlShortenerService.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor @ToString
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class UrlDto {
+
     private String url;
     private String expirationDate;
 }

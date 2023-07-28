@@ -9,8 +9,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableWebMvc
 @EnableSwagger2
 public class UrlShortenerServiceApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(UrlShortenerServiceApplication.class, args);
-	}
+
+    public static void main(String[] args) {
+        SpringApplication.run(UrlShortenerServiceApplication.class, args);
+    }
 
 }

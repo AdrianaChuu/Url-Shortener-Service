@@ -1,4 +1,4 @@
-container?=docker-mongo
+container?=docker-mymongo
 
 default:
 	echo ${container}
