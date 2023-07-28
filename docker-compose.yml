@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+
+  mongo:
+    image: mongo:6.0.8
+    platform: linux/amd64
+    restart: unless-stopped
+    container_name: docker-mymongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: mongoDB
+    ports:
+      - "27017:27017"
