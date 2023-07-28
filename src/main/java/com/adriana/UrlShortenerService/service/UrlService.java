@@ -1,7 +1,7 @@
 package com.adriana.UrlShortenerService.service;
 
-import com.adriana.UrlShortenerService.entity.Url;
 import com.adriana.UrlShortenerService.dto.UrlDto;
+import com.adriana.UrlShortenerService.entity.Url;
 import org.springframework.stereotype.Service;
 
 @Service

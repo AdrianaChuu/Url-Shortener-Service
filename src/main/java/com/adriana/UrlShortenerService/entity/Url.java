@@ -5,16 +5,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @ToString
+@Document(collection = "url")
 public class Url {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private String id;
 
     @Lob
     private String originalUrl;
