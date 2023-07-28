@@ -4,6 +4,7 @@ import com.adriana.UrlShortenerService.dto.ResponseDto;
 import com.adriana.UrlShortenerService.dto.UrlDto;
 import com.adriana.UrlShortenerService.entity.Url;
 import com.adriana.UrlShortenerService.exception.InternalServerException;
+import com.adriana.UrlShortenerService.exception.ShortenUrlExpiredOrNotFoundException;
 import com.adriana.UrlShortenerService.exception.UrlNotFoundException;
 import com.adriana.UrlShortenerService.service.UrlService;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -51,7 +52,8 @@ public class UrlShortenController {
         }
 
         if(urlToGet.getExpirationDate().isBefore(LocalDateTime.now())){
-            //deleteShortLink
+            urlService.deleteURL(urlToGet);
+            throw new ShortenUrlExpiredOrNotFoundException("URL Expired. Please generate a new one.");
         }
 
         HttpHeaders httpHeaders = new HttpHeaders();

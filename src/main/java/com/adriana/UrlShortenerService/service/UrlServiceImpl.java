@@ -31,12 +31,12 @@ public class UrlServiceImpl implements UrlService{
         urlToSave.setExpirationDate(getExpirationDate(urlDto.getExpirationDate(), urlToSave.getCreationDate()));
         Url urlToPersist = saveCreatedUrl(urlToSave);
 
-        return urlToPersist!=null? urlToPersist:null;
+        return urlToPersist;
     }
 
     private LocalDateTime getExpirationDate(String expirationDate, LocalDateTime creationDate) {
         if(StringUtils.isBlank(expirationDate)){
-            return creationDate.plusDays(1);
+            return creationDate.plusHours(12);
         }
         return LocalDateTime.parse(expirationDate);
     }
@@ -54,5 +54,10 @@ public class UrlServiceImpl implements UrlService{
     @Override
     public Url getUrl(String url) {
         return urlRepository.findByShortenUrl(url);
+    }
+
+    @Override
+    public void deleteURL(Url url) {
+        urlRepository.delete(url);
     }
 }
