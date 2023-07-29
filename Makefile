@@ -18,3 +18,12 @@ docker-down: ## Stop docker containers and clear artefacts.
 docker-exec: ## exec container
 	@echo "Run docker exec command into container - ${container}"
 	docker exec -it ${container} /bin/sh
+
+clean:
+	-rm ./target/UrlShortenerService*.jar
+
+jar:
+	mvn clean install
+
+run:
+	mvn spring-boot:run
