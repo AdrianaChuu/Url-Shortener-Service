@@ -17,7 +17,7 @@ docker-down: ## Stop docker containers and clear artefacts.
 .PHONY: docker-exec
 docker-exec: ## exec container
 	@echo "Run docker exec command into container - ${container}"
-	docker exec -it ${container} /bin/sh
+	docker exec -it ${container} bash
 
 clean:
 	-rm ./target/UrlShortenerService*.jar

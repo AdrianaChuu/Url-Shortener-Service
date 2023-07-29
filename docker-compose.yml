@@ -3,8 +3,8 @@ version: '3.7'
 services:
 
   mongo:
-    image: mongo:latest
-    platform: linux/amd64
+    image: mongo:3.6.23
+#    platform: linux/amd64
     restart: unless-stopped
     container_name: docker-mymongo
     environment:
