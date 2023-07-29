@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UrlServiceImpl implements UrlService {
 
-    private UrlRepository urlRepository;
+    private final UrlRepository urlRepository;
 
     @Autowired
     public UrlServiceImpl(UrlRepository urlRepository) {
