@@ -7,11 +7,15 @@ import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UrlServiceImpl implements UrlService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UrlServiceImpl.class);
 
     private final UrlRepository urlRepository;
 
@@ -33,20 +37,21 @@ public class UrlServiceImpl implements UrlService {
         return urlToPersist;
     }
 
-    private LocalDateTime getExpirationDate(String expirationDate, LocalDateTime creationDate) {
+    static LocalDateTime getExpirationDate(String expirationDate, LocalDateTime creationDate) {
         if (StringUtils.isBlank(expirationDate)) {
             return creationDate.plusHours(12);
         }
         return LocalDateTime.parse(expirationDate);
     }
 
-    private String encodeUrl(String url) {
+    static String encodeUrl(String url) {
         LocalDateTime time = LocalDateTime.now();
         return Hashing.crc32().hashString(url.concat(time.toString()), StandardCharsets.UTF_8).toString();
     }
 
     @Override
     public Url saveCreatedUrl(Url url) {
+        LOG.info("saveCreatedUrl{}", url);
         return urlRepository.save(url);
     }
 

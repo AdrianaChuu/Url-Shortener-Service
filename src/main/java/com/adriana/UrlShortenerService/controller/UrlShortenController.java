@@ -10,6 +10,8 @@ import com.adriana.UrlShortenerService.service.UrlService;
 import java.net.URI;
 import java.time.LocalDateTime;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UrlShortenController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UrlShortenController.class);
+
     private UrlService urlService;
 
     @Autowired
@@ -32,6 +36,7 @@ public class UrlShortenController {
 
     @PostMapping("/url")
     public ResponseEntity<?> createShortenLink(@RequestBody UrlDto urlDto) {
+        LOG.info("createShortenLink input{}", urlDto);
         String[] schemes = {"http", "https"};
         UrlValidator urlValidator = new UrlValidator(schemes);
         if (!urlValidator.isValid(urlDto.getUrl())) {
