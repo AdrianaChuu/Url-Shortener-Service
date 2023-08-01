@@ -7,8 +7,6 @@ import com.adriana.UrlShortenerService.exception.InternalServerException;
 import com.adriana.UrlShortenerService.exception.ShortenUrlExpiredOrNotFoundException;
 import com.adriana.UrlShortenerService.exception.UrlNotFoundException;
 import com.adriana.UrlShortenerService.service.UrlService;
-import java.net.URI;
-import java.time.LocalDateTime;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+import java.time.LocalDateTime;
 
 @RestController
 public class UrlShortenController {
@@ -59,10 +60,10 @@ public class UrlShortenController {
     public ResponseEntity<?> redirectToOriginalUrl(@PathVariable String shortLink) {
         Url urlToGet = urlService.getUrl(shortLink);
         if (urlToGet == null) {
-            throw new InternalServerException("The shorten URL not found or expired");
+            throw new UrlNotFoundException("The URL is not found");
         }
 
-        if (urlToGet.getExpirationDate().isBefore(LocalDateTime.now())) {
+        if (urlToGet.getExpirationDate()!=null && urlToGet.getExpirationDate().isBefore(LocalDateTime.now())) {
             urlService.deleteURL(urlToGet);
             throw new ShortenUrlExpiredOrNotFoundException("URL Expired. Please generate a new one.");
         }
