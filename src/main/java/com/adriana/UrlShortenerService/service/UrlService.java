@@ -13,5 +13,7 @@ public interface UrlService {
 
     Url getUrl(String url);
 
+    Url getFromExistingUrl(String originalUrl);
+
     void deleteURL(Url url);
 }

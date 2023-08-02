@@ -69,7 +69,7 @@ class UrlServiceImplTest {
     }
 
     @Test
-    void deleteURL_valueShouldBeNull() {
+    void deleteURL_valueShouldBeDeleted() {
         UrlDto urlDto = new UrlDto();
         urlDto.setUrl("https://gov.com");
         Url urlToSave = new Url();

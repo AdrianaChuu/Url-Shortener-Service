@@ -43,6 +43,13 @@ public class UrlShortenController {
         if (!urlValidator.isValid(urlDto.getUrl())) {
             throw new UrlNotFoundException("The URL is invalid");
         }
+        if(urlService.getFromExistingUrl(urlDto.getUrl()) != null){
+            ResponseDto responseDto = new ResponseDto();
+            responseDto.setShortenUrl(urlService.getFromExistingUrl(urlDto.getUrl()).getShortenUrl());
+            responseDto.setOriginalUrl(urlService.getFromExistingUrl(urlDto.getUrl()).getOriginalUrl());
+            responseDto.setExpirationDate(LocalDateTime.now().plusDays(1));
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        }
 
         Url urlToSave = urlService.createShortenLink(urlDto);
         if (urlToSave == null) {
