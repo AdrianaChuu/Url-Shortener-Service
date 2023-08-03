@@ -1,11 +1,12 @@
 package com.adriana.UrlShortenerService.exception;
 
 
-import java.io.Serial;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+import java.io.Serial;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
 public class ShortenUrlExpiredOrNotFoundException extends RuntimeException {
 
     @Serial

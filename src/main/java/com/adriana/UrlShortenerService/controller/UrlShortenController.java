@@ -4,6 +4,7 @@ import com.adriana.UrlShortenerService.dto.ResponseDto;
 import com.adriana.UrlShortenerService.dto.UrlDto;
 import com.adriana.UrlShortenerService.entity.Url;
 import com.adriana.UrlShortenerService.exception.InternalServerException;
+import com.adriana.UrlShortenerService.exception.MalformedRequestException;
 import com.adriana.UrlShortenerService.exception.ShortenUrlExpiredOrNotFoundException;
 import com.adriana.UrlShortenerService.exception.UrlNotFoundException;
 import com.adriana.UrlShortenerService.service.UrlService;
@@ -41,7 +42,7 @@ public class UrlShortenController {
         String[] schemes = {"http", "https"};
         UrlValidator urlValidator = new UrlValidator(schemes);
         if (!urlValidator.isValid(urlDto.getUrl())) {
-            throw new UrlNotFoundException("The URL is invalid");
+            throw new MalformedRequestException("The URL is invalid");
         }
         if(urlService.getFromExistingUrl(urlDto.getUrl()) != null){
             ResponseDto responseDto = new ResponseDto();
@@ -60,7 +61,7 @@ public class UrlShortenController {
         responseDto.setShortenUrl(urlToSave.getShortenUrl());
         responseDto.setOriginalUrl(urlToSave.getOriginalUrl());
         responseDto.setExpirationDate(urlToSave.getExpirationDate());
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @GetMapping("url/{shortLink}")
