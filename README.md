@@ -1,10 +1,10 @@
 
+<img width="1349" alt="ui" src="https://github.com/AdrianaChuu/Url-Shortener-Service/assets/134931782/938a7d4a-804a-47f7-8953-2007ce827a0c">
 ## Endpoints
 
 **GET** /`url/{shortUrl}`
 
 Redirects the user to the full URL associated with the given short URL.
-<img width="1349" alt="ui" src="https://github.com/AdrianaChuu/Url-Shortener-Service/assets/134931782/938a7d4a-804a-47f7-8953-2007ce827a0c">
 
 Parameters: 
 
