@@ -1,5 +1,29 @@
-
+# Url-Shortener-Service
+A URL shortening service with a RESTful API. This service should allow users to submit long URLs and receive short URLs that redirect to the original long URLs.
 <img width="1349" alt="ui" src="https://github.com/AdrianaChuu/Url-Shortener-Service/assets/134931782/938a7d4a-804a-47f7-8953-2007ce827a0c">
+
+Containing the following components:
+
+WebClient Test
+
+Controller
+
+Service
+
+DAO Repository
+
+Entity
+
+Test 
+
+Maven
+
+Swagger config file
+
+docker compose for MongoDB
+
+simple frontend UI using React
+
 ## Endpoints
 
 **GET** /`url/{shortUrl}`
