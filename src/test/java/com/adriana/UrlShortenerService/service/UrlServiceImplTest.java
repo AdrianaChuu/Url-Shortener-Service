@@ -3,13 +3,12 @@ package com.adriana.UrlShortenerService.service;
 import com.adriana.UrlShortenerService.dto.UrlDto;
 import com.adriana.UrlShortenerService.entity.Url;
 import com.adriana.UrlShortenerService.repository.UrlRepository;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDateTime;
 
 import static com.adriana.UrlShortenerService.service.UrlServiceImpl.encodeUrl;
 import static com.adriana.UrlShortenerService.service.UrlServiceImpl.getExpirationDate;
@@ -33,14 +32,27 @@ class UrlServiceImplTest {
     }
 
     @Test
+    void testExtraSpaceShouldTrim() {
+
+    }
+
+    @Test
+    void test() {
+
+    }
+
+
+    @Test
     void createShortenLink_shouldSuccessfullySaved() {
         UrlDto urlDto = new UrlDto();
         urlDto.setUrl("https://www.chevalcollection.com");
-        Url urlToSave = new Url();
-        urlToSave.setCreationDate(LocalDateTime.now());
-        urlToSave.setShortenUrl(encodeUrl(urlDto.getUrl()));
-        urlToSave.setOriginalUrl(urlDto.getUrl());
-        urlToSave.setExpirationDate(getExpirationDate(urlDto.getExpirationDate(), urlToSave.getCreationDate()));
+        LocalDateTime currentTime = LocalDateTime.now();
+        Url urlToSave = Url.builder()
+                .creationDate(currentTime)
+                .shortenUrl(encodeUrl(urlDto.getUrl()))
+                .originalUrl(urlDto.getUrl())
+                .expirationDate(getExpirationDate(urlDto.getExpirationDate(), currentTime))
+                .build();
 
         when(urlRepository.save(any(Url.class))).thenReturn(urlToSave);
 
@@ -57,6 +69,7 @@ class UrlServiceImplTest {
         UrlDto urlDto = new UrlDto();
         urlDto.setUrl("https://google.com");
         Url urlToSave = new Url();
+        //builder pattern
         urlToSave.setCreationDate(LocalDateTime.now());
         urlToSave.setShortenUrl(encodeUrl(urlDto.getUrl()));
         urlToSave.setOriginalUrl(urlDto.getUrl());

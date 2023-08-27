@@ -28,14 +28,21 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public Url createShortenLink(UrlDto urlDto) {
         String encodedUrl = encodeUrl(urlDto.getUrl());
+        Url existingUrl = getFromExistingUrl(urlDto.getUrl());
+        //if original url already exist
+        if(existingUrl!=null){
+            existingUrl.setExpirationDate(LocalDateTime.now().plusDays(1));
+            return saveCreatedUrl(existingUrl);
+        }
+
+        //there's no such url in db, create one and save in db
         Url urlToSave = new Url();
         urlToSave.setCreationDate(LocalDateTime.now());
         urlToSave.setShortenUrl(encodedUrl);
         urlToSave.setOriginalUrl(urlDto.getUrl());
         urlToSave.setExpirationDate(getExpirationDate(urlDto.getExpirationDate(), urlToSave.getCreationDate()));
-        Url urlToPersist = saveCreatedUrl(urlToSave);
 
-        return urlToPersist;
+        return saveCreatedUrl(urlToSave);
     }
 
     static LocalDateTime getExpirationDate(String expirationDate, LocalDateTime creationDate) {
