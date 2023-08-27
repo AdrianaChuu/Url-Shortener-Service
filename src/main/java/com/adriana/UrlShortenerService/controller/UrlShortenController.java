@@ -8,7 +8,9 @@ import com.adriana.UrlShortenerService.exception.MalformedRequestException;
 import com.adriana.UrlShortenerService.exception.ShortenUrlExpiredOrNotFoundException;
 import com.adriana.UrlShortenerService.exception.UrlNotFoundException;
 import com.adriana.UrlShortenerService.service.UrlService;
-import org.apache.commons.validator.routines.UrlValidator;
+import com.adriana.UrlShortenerService.validateURL.Validator;
+import java.net.URI;
+import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URI;
-import java.time.LocalDateTime;
 
 @RestController
 public class UrlShortenController {
@@ -39,9 +38,8 @@ public class UrlShortenController {
     @PostMapping("/url")
     public ResponseEntity<?> createShortenLink(@RequestBody UrlDto urlDto) {
         LOG.info("createShortenLink input{}", urlDto);
-        String[] schemes = {"http", "https"};
-        UrlValidator urlValidator = new UrlValidator(schemes);
-        if (!urlValidator.isValid(urlDto.getUrl())) {
+        Validator validator = new Validator();
+        if (validator.isValidUrl(urlDto.getUrl())) {
             throw new MalformedRequestException("The URL is invalid");
         }
 
