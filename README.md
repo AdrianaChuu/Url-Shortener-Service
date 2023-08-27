@@ -83,7 +83,8 @@ Example Response: HTTP/1.1 201 Created Content-Type: application/json Location: 
     "expirationDate": "2022/01/05 12:00:00",
 }
 ```
-You can also test endpoint on swagger!
+You can also test endpoint on swagger! 
+http://localhost:8080/swagger-ui/index.html
 <img width="1496" alt="截圖 2023-08-27 下午3 19 01" src="https://github.com/AdrianaChuu/Url-Shortener-Service/assets/134931782/60a901f9-c295-4985-9e7a-323170779ca2">
 
 
