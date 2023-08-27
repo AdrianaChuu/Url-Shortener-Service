@@ -39,7 +39,7 @@ public class UrlShortenController {
     public ResponseEntity<?> createShortenLink(@RequestBody UrlDto urlDto) {
         LOG.info("createShortenLink input{}", urlDto);
         Validator validator = new Validator();
-        if (validator.isValidUrl(urlDto.getUrl())) {
+        if (!validator.isValidUrl(urlDto.getUrl())) {
             throw new MalformedRequestException("The URL is invalid");
         }
 
