@@ -14,6 +14,7 @@ import static com.adriana.UrlShortenerService.service.UrlServiceImpl.encodeUrl;
 import static com.adriana.UrlShortenerService.service.UrlServiceImpl.getExpirationDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,17 +31,6 @@ class UrlServiceImplTest {
     void setUp() {
         urlServiceImpl = new UrlServiceImpl(urlRepository);
     }
-
-    @Test
-    void testExtraSpaceShouldTrim() {
-
-    }
-
-    @Test
-    void test() {
-
-    }
-
 
     @Test
     void createShortenLink_shouldSuccessfullySaved() {
@@ -65,15 +55,44 @@ class UrlServiceImplTest {
     }
 
     @Test
-    void shouldGetUrl() {
+    void createShortenLink_ExistingUrl_ShouldUpdateExpirationDate() {
+        UrlDto urlDto = new UrlDto();
+        urlDto.setUrl("https://www.example.com");
+        LocalDateTime currentTime = LocalDateTime.now();
+        Url existingUrl = Url.builder()
+                .creationDate(currentTime.minusDays(1))
+                .shortenUrl("existingShortLink") // Provide an existing shortened URL here
+                .originalUrl(urlDto.getUrl())
+                .expirationDate(currentTime.plusDays(1))
+                .build();
+
+        when(urlRepository.findByOriginalUrl(urlDto.getUrl())).thenReturn(existingUrl);
+        when(urlRepository.save(any(Url.class))).thenReturn(existingUrl);
+
+        Url actual = urlServiceImpl.createShortenLink(urlDto);
+        assertNotNull(actual);
+        assertEquals("existingShortLink", actual.getShortenUrl());
+        assertEquals(currentTime.plusDays(1).toLocalDate(), actual.getExpirationDate().toLocalDate());
+        verify(urlRepository, times(1)).save(any());
+    }
+
+    @Test
+    void getUrl_ShouldReturnNullForNonExistentShortLink() {
+        when(urlRepository.findByShortenUrl("nonExistentShortLink")).thenReturn(null);
+        assertNull(urlServiceImpl.getUrl("nonExistentShortLink"));
+    }
+
+    @Test
+    void getUrl_shouldSuccessfullyGetUrl() {
         UrlDto urlDto = new UrlDto();
         urlDto.setUrl("https://google.com");
-        Url urlToSave = new Url();
-        //builder pattern
-        urlToSave.setCreationDate(LocalDateTime.now());
-        urlToSave.setShortenUrl(encodeUrl(urlDto.getUrl()));
-        urlToSave.setOriginalUrl(urlDto.getUrl());
-        urlToSave.setExpirationDate(getExpirationDate(urlDto.getExpirationDate(), urlToSave.getCreationDate()));
+        LocalDateTime currentTime = LocalDateTime.now();
+        Url urlToSave = Url.builder()
+                .creationDate(currentTime)
+                .shortenUrl(encodeUrl(urlDto.getUrl()))
+                .originalUrl(urlDto.getUrl())
+                .expirationDate(getExpirationDate(urlDto.getExpirationDate(), currentTime))
+                .build();
 
         when(urlRepository.save(any(Url.class))).thenReturn(urlToSave);
         when(urlRepository.findByShortenUrl(urlToSave.getShortenUrl())).thenReturn(urlToSave);
@@ -82,18 +101,30 @@ class UrlServiceImplTest {
     }
 
     @Test
+    void deleteURL_ShouldDeleteUrl() {
+        Url url = new Url();
+        url.setShortenUrl("shortLink"); // Provide a shortened URL to delete
+        urlServiceImpl.deleteURL(url);
+        verify(urlRepository, times(1)).delete(url);
+    }
+
+    @Test
     void deleteURL_valueShouldBeDeleted() {
         UrlDto urlDto = new UrlDto();
         urlDto.setUrl("https://gov.com");
-        Url urlToSave = new Url();
-        urlToSave.setCreationDate(LocalDateTime.now());
-        urlToSave.setShortenUrl(encodeUrl(urlDto.getUrl()));
-        urlToSave.setOriginalUrl(urlDto.getUrl());
-        urlToSave.setExpirationDate(getExpirationDate(urlDto.getExpirationDate(), urlToSave.getCreationDate()));
+        LocalDateTime currentTime = LocalDateTime.now();
+        Url urlToSave = Url.builder()
+                .creationDate(currentTime)
+                .shortenUrl(encodeUrl(urlDto.getUrl()))
+                .originalUrl(urlDto.getUrl())
+                .expirationDate(getExpirationDate(urlDto.getExpirationDate(), currentTime))
+                .build();
 
         when(urlRepository.save(any(Url.class))).thenReturn(urlToSave);
         Url url = urlServiceImpl.saveCreatedUrl(urlToSave);
         urlServiceImpl.deleteURL(url);
         verify(urlRepository, times(1)).delete(url);
     }
+
+
 }

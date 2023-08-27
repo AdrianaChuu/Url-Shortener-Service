@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UrlRepository extends MongoRepository<Url, String> {
-
     public Url findByShortenUrl(String shortenLink);
-
     public Url findByOriginalUrl(String originalLink);
-
 }

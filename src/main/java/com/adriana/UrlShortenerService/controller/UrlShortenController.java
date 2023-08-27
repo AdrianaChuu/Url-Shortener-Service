@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UrlShortenController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UrlShortenController.class);
-
     private UrlService urlService;
 
     @Autowired
@@ -38,6 +37,7 @@ public class UrlShortenController {
     @PostMapping("/url")
     public ResponseEntity<?> createShortenLink(@RequestBody UrlDto urlDto) {
         LOG.info("createShortenLink input{}", urlDto);
+        urlDto.setUrl(urlDto.getUrl().trim());
         Validator validator = new Validator();
         if (!validator.isValidUrl(urlDto.getUrl())) {
             throw new MalformedRequestException("The URL is invalid");
@@ -52,7 +52,9 @@ public class UrlShortenController {
         responseDto.setShortenUrl(urlToSave.getShortenUrl());
         responseDto.setOriginalUrl(urlToSave.getOriginalUrl());
         responseDto.setExpirationDate(urlToSave.getExpirationDate());
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(responseDto);
     }
 
     @GetMapping("url/{shortLink}")
@@ -69,6 +71,9 @@ public class UrlShortenController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(URI.create(urlToGet.getOriginalUrl()));
-        return new ResponseEntity<>(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
+        return ResponseEntity
+                .status(HttpStatus.MOVED_PERMANENTLY)
+                .headers(httpHeaders)
+                .build();
     }
 }
