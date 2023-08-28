@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UrlShortenController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UrlShortenController.class);
-    private UrlService urlService;
+    private final UrlService urlService;
 
     @Autowired
     public UrlShortenController(UrlService urlService) {
@@ -39,7 +39,7 @@ public class UrlShortenController {
         LOG.info("createShortenLink input{}", urlDto);
         urlDto.setUrl(urlDto.getUrl().trim());
         Validator validator = new Validator();
-        if (!validator.isValidUrl(urlDto.getUrl())) {
+        if (!validator.apply(urlDto.getUrl())) {
             throw new MalformedRequestException("The URL is invalid");
         }
 

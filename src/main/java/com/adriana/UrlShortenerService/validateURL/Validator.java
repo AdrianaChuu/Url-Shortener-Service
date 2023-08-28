@@ -1,9 +1,12 @@
 package com.adriana.UrlShortenerService.validateURL;
 
+import java.util.function.Function;
 import org.apache.commons.validator.routines.UrlValidator;
 
-public class Validator {
-    public boolean isValidUrl(String url){
+public class Validator implements Function<String, Boolean> {
+
+    @Override
+    public Boolean apply(String url) {
         String[] schemes = {"http", "https"};
         UrlValidator urlValidator = new UrlValidator(schemes);
         return urlValidator.isValid(url);

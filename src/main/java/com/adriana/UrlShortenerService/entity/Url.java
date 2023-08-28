@@ -26,4 +26,12 @@ public class Url {
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
 
+    public static class UrlBuilder {
+        public Url build() {
+            if (expirationDate == null) {
+                expirationDate = creationDate.plusHours(12);
+            }
+            return new Url(id, originalUrl, shortenUrl, creationDate, expirationDate);
+        }
+    }
 }

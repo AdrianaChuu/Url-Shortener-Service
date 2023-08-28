@@ -1,5 +1,6 @@
 package com.adriana.UrlShortenerService.dto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,5 @@ import lombok.ToString;
 public class UrlDto {
 
     private String url;
-    private String expirationDate;
+    private LocalDateTime expirationDate;
 }

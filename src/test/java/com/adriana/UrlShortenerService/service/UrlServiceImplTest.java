@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.adriana.UrlShortenerService.service.UrlServiceImpl.encodeUrl;
-import static com.adriana.UrlShortenerService.service.UrlServiceImpl.getExpirationDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -41,7 +40,7 @@ class UrlServiceImplTest {
                 .creationDate(currentTime)
                 .shortenUrl(encodeUrl(urlDto.getUrl()))
                 .originalUrl(urlDto.getUrl())
-                .expirationDate(getExpirationDate(urlDto.getExpirationDate(), currentTime))
+                .expirationDate(urlDto.getExpirationDate())
                 .build();
 
         when(urlRepository.save(any(Url.class))).thenReturn(urlToSave);
@@ -91,7 +90,7 @@ class UrlServiceImplTest {
                 .creationDate(currentTime)
                 .shortenUrl(encodeUrl(urlDto.getUrl()))
                 .originalUrl(urlDto.getUrl())
-                .expirationDate(getExpirationDate(urlDto.getExpirationDate(), currentTime))
+                .expirationDate(urlDto.getExpirationDate())
                 .build();
 
         when(urlRepository.save(any(Url.class))).thenReturn(urlToSave);
@@ -117,7 +116,7 @@ class UrlServiceImplTest {
                 .creationDate(currentTime)
                 .shortenUrl(encodeUrl(urlDto.getUrl()))
                 .originalUrl(urlDto.getUrl())
-                .expirationDate(getExpirationDate(urlDto.getExpirationDate(), currentTime))
+                .expirationDate(urlDto.getExpirationDate())
                 .build();
 
         when(urlRepository.save(any(Url.class))).thenReturn(urlToSave);
