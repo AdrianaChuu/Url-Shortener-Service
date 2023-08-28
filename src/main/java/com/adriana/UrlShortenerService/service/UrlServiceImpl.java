@@ -33,11 +33,12 @@ public class UrlServiceImpl implements UrlService {
         }
 
         //there's no such url in db, create one and save in db
-        Url urlToSave = new Url();
-        urlToSave.setCreationDate(LocalDateTime.now());
-        urlToSave.setShortenUrl(encodedUrl);
-        urlToSave.setOriginalUrl(urlDto.getUrl());
-        urlToSave.setExpirationDate(getExpirationDate(urlDto.getExpirationDate(), urlToSave.getCreationDate()));
+        Url urlToSave = Url.builder()
+                .creationDate(LocalDateTime.now())
+                .shortenUrl(encodedUrl)
+                .originalUrl(urlDto.getUrl())
+                .expirationDate(urlDto.getExpirationDate())
+                .build();
 
         return saveCreatedUrl(urlToSave);
     }
